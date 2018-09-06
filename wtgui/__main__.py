@@ -66,38 +66,53 @@ class RootView:
         self.root_menu.add_cascade(label='WTGUI', menu=self.app_menu)
         self.app_menu.add_command(label='Quit WTGUI', command=self.frame.quit)
 
-        self.file_menu = Menu(self.root_menu)
-        self.root_menu.add_cascade(label='File', menu=self.file_menu)
+        # self.file_menu = Menu(self.root_menu)
+        # self.root_menu.add_cascade(label='File', menu=self.file_menu)
 
     def config_main_view(self):
         """
         Confugure the main view
         """
-        self.diameter_label = Label(self.frame, text="Diameter [mm]")
-        self.pressure_label = Label(self.frame, text="Pressure [bar]")
-        self.smys_label = Label(self.frame, text="SMYS [MPa]")
+        self.heading1 = Label(self.frame, text="Parameter", font="Helvetica 9 bold")
+        self.heading2 = Label(self.frame, text="Units", font="Helvetica 9 bold")
+        self.heading3 = Label(self.frame, text="Value", font="Helvetica 9 bold")
+        self.diameter_label = Label(self.frame, text="Diameter")
+        self.pressure_label = Label(self.frame, text="Pressure")
+        self.smys_label = Label(self.frame, text="SMYS")
+        self.diameter_units_label = Label(self.frame, text="[mm]")
+        self.pressure_units_label = Label(self.frame, text="[bar]")
+        self.smys_units_label = Label(self.frame, text="[MPa]")        
         self.diameter = Entry(self.frame)
         self.pressure = Entry(self.frame)
         self.smys = Entry(self.frame)
 
-        self.diameter_label.grid(row=0, sticky=W)
-        self.pressure_label.grid(row=1, sticky=W)
-        self.smys_label.grid(row=2, sticky=W)
+        self.heading1.grid(row=0, sticky=W)
+        self.heading2.grid(row=0, column=1)
+        self.heading3.grid(row=0, column=2, sticky=W)
 
-        self.diameter.grid(row=0, column=1)
-        self.pressure.grid(row=1, column=1)
-        self.smys.grid(row=2, column=1)
+        self.diameter_label.grid(row=1, sticky=W)
+        self.pressure_label.grid(row=2, sticky=W)
+        self.smys_label.grid(row=3, sticky=W)
+
+        self.diameter_units_label.grid(row=1, column=1)
+        self.pressure_units_label.grid(row=2, column=1)
+        self.smys_units_label.grid(row=3, column=1)
+
+        self.diameter.grid(row=1, column=2)
+        self.pressure.grid(row=2, column=2)
+        self.smys.grid(row=3, column=2)
 
         self.runButton = Button(self.frame, text="Run",
                                 command=self.runCalculation)
-        self.runButton.grid(row=3, column=1, sticky=E)
+        self.runButton.grid(row=4, column=2, sticky=E)
 
     def runCalculation(self):
         d = 0.001 * float(self.diameter.get())
         p = 100_000 * float(self.pressure.get())
         smys = 1_000_000 * float(self.smys.get())
         t = calc_wallthick(d, p, smys)
-        showinfo("Minimum Wall Thickness", f'{1000 * t:.2f} mm')
+        showinfo("Result", f'Minimim Wall Thickness:\n{1000 * t:.2f} mm')
+
 
 
 def main():
