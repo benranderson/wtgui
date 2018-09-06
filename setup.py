@@ -11,7 +11,7 @@ setup(
     packages=find_packages(exclude=('tests',)),
     entry_points={
         'console_scripts': [
-            'wt=wtgui.__main__:main'
+            'wt=wtgui.main:main'
         ]
     }
 )
