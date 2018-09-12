@@ -72,57 +72,93 @@ class InputDataForm(tk.Frame):
 
         # Build the form
         # General Information
-        generalinfo = tk.LabelFrame(self, text='General Information')
-        self.inputs['Date'] = LabelInput(generalinfo, 'Date',
-                                         input_var=tk.StringVar())
-        self.inputs['Date'].grid(row=0, column=0)
-        self.inputs['Originator'] = LabelInput(generalinfo, 'Originator',
-                                               input_var=tk.StringVar())
-        self.inputs['Originator'].grid(row=0, column=1)
-        self.inputs['Project'] = LabelInput(generalinfo, 'Project',
+        generalinfo = tk.LabelFrame(self, text='General Information',
+                                    font=('TkDefaultFont 14 bold'), padx=5,
+                                    pady=5)
+        self.inputs['project'] = LabelInput(generalinfo, 'Project',
                                             input_var=tk.StringVar())
-        self.inputs['Project'].grid(row=0, column=2)
+        self.inputs['project'].grid(row=0, column=0, columnspan=2)
+        self.inputs['orig'] = LabelInput(generalinfo, 'Originator',
+                                         input_var=tk.StringVar())
+        self.inputs['orig'].grid(row=1, column=0)
+        self.inputs['date'] = LabelInput(generalinfo, 'Date',
+                                         input_var=tk.StringVar())
+        self.inputs['date'].grid(row=1, column=1)
+        self.inputs['checker'] = LabelInput(generalinfo, 'Checker',
+                                            input_var=tk.StringVar())
+        self.inputs['checker'].grid(row=2, column=0)
+        self.inputs['date_chk'] = LabelInput(generalinfo, 'Check Date',
+                                             input_var=tk.StringVar())
+        self.inputs['date_chk'].grid(row=2, column=1)
         generalinfo.grid(row=0, column=0, sticky=(tk.W + tk.E))
 
-        # Pipe Dimensional Information
-        dimensioninfo = tk.LabelFrame(
-            self, text='Pipe Dimensional Information')
+        # Pipe Dimensional Data
+        dimensiondata = tk.LabelFrame(self, text='Pipe Dimensional Data',
+                                      font=('TkDefaultFont 14 bold'), padx=5,
+                                      pady=5)
         self.inputs['D_o'] = LabelInput(
-            dimensioninfo, 'Outside Diameter [mm]',
+            dimensiondata, 'Outside Diameter [mm]',
             input_class=tk.Spinbox,
             input_var=tk.DoubleVar(),
             input_args={'from_': 0, 'to': 1000, 'increment': 0.01}
         )
         self.inputs['D_o'].grid(row=0, column=0)
         self.inputs['t_sel'] = LabelInput(
-            dimensioninfo, 'Selected Wall Thickness [mm]',
+            dimensiondata, 'Selected Wall Thickness [mm]',
             input_class=tk.Spinbox,
             input_var=tk.DoubleVar(),
             input_args={'from_': 0, 'to': 1000, 'increment': 0.01}
         )
         self.inputs['t_sel'].grid(row=0, column=1)
         self.inputs['t_cor'] = LabelInput(
-            dimensioninfo, 'Corrosion Allowance [mm]',
+            dimensiondata, 'Corrosion Allowance [mm]',
             input_class=tk.Spinbox,
             input_var=tk.DoubleVar(),
             input_args={'from_': 0, 'to': 1000, 'increment': 0.01}
         )
         self.inputs['t_cor'].grid(row=1, column=0)
         self.inputs['tol'] = LabelInput(
-            dimensioninfo, 'Mill tolerance [%]',
+            dimensiondata, 'Mill tolerance [%]',
             input_class=tk.Spinbox,
             input_var=tk.DoubleVar(),
             input_args={'from_': 0, 'to': 100, 'increment': 0.01}
         )
         self.inputs['tol'].grid(row=1, column=1)
         self.inputs['B'] = LabelInput(
-            dimensioninfo, 'Bend Thinning [%]',
+            dimensiondata, 'Bend Thinning [%]',
             input_class=tk.Spinbox,
             input_var=tk.DoubleVar(),
             input_args={'from_': 0, 'to': 100, 'increment': 0.01}
         )
-        self.inputs['B'].grid(row=1, column=2)
-        dimensioninfo.grid(row=1, column=0, sticky=(tk.W + tk.E))
+        self.inputs['B'].grid(row=2, column=0)
+        dimensiondata.grid(row=1, column=0, sticky=(tk.W + tk.E))
+
+        # Pipe Material Data
+        materialdata = tk.LabelFrame(self, text='Pipe Material Data',
+                                     font=('TkDefaultFont 14 bold'), padx=5,
+                                     pady=5)
+        self.inputs['SMYS'] = LabelInput(
+            materialdata, 'Specified Minimum Yield Strength [MPa]',
+            input_class=tk.Spinbox,
+            input_var=tk.DoubleVar(),
+            input_args={'from_': 0, 'to': 100000, 'increment': 0.01}
+        )
+        self.inputs['SMYS'].grid(row=0, column=0)
+        self.inputs['E'] = LabelInput(
+            materialdata, "Young's Modulus [GPa]",
+            input_class=tk.Spinbox,
+            input_var=tk.DoubleVar(),
+            input_args={'from_': 0, 'to': 100000, 'increment': 0.01}
+        )
+        self.inputs['E'].grid(row=0, column=1)
+        self.inputs['v'] = LabelInput(
+            materialdata, "Poisson's Ratio [-]",
+            input_class=tk.Spinbox,
+            input_var=tk.DoubleVar(),
+            input_args={'from_': 0, 'to': 1, 'increment': 0.01}
+        )
+        self.inputs['v'].grid(row=1, column=0)
+        materialdata.grid(row=2, column=0, sticky=(tk.W + tk.E))
 
         # default the form
         self.reset()
