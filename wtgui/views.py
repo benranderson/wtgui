@@ -27,26 +27,31 @@ class InputDataForm(tk.Frame):
             field_spec=fields['Project']
         )
         self.inputs['Project'].grid(row=0, column=0, columnspan=2)
+        self.inputs['Pipeline'] = w.LabelInput(
+            generalinfo, 'Pipeline',
+            field_spec=fields['Pipeline']
+        )
+        self.inputs['Pipeline'].grid(row=1, column=0, columnspan=2)
         self.inputs['Originator'] = w.LabelInput(
             generalinfo, 'Originator',
             field_spec=fields['Originator']
         )
-        self.inputs['Originator'].grid(row=1, column=0)
+        self.inputs['Originator'].grid(row=2, column=0)
         self.inputs['Date'] = w.LabelInput(
             generalinfo, 'Date',
             field_spec=fields['Date']
         )
-        self.inputs['Date'].grid(row=1, column=1)
+        self.inputs['Date'].grid(row=2, column=1)
         self.inputs['Checker'] = w.LabelInput(
             generalinfo, 'Checker',
             field_spec=fields['Checker']
         )
-        self.inputs['Checker'].grid(row=2, column=0)
+        self.inputs['Checker'].grid(row=3, column=0)
         self.inputs['CheckDate'] = w.LabelInput(
             generalinfo, 'Check Date',
             field_spec=fields['CheckDate']
         )
-        self.inputs['CheckDate'].grid(row=2, column=1)
+        self.inputs['CheckDate'].grid(row=3, column=1)
         generalinfo.grid(row=0, column=0, sticky=(tk.W + tk.E))
 
         # Pipe Dimensional Data
@@ -61,7 +66,7 @@ class InputDataForm(tk.Frame):
         )
         self.inputs['D_o'].grid(row=0, column=0)
         self.inputs['t_sel'] = w.LabelInput(
-            dimensiondata, 'Selected Wall Thickness [mm]',
+            dimensiondata, 'Sel. Wall Thickness [mm]',
             field_spec=fields['t_sel']
         )
         self.inputs['t_sel'].grid(row=0, column=1)
@@ -89,7 +94,7 @@ class InputDataForm(tk.Frame):
             padx=5,
             pady=5)
         self.inputs['SMYS'] = w.LabelInput(
-            materialdata, 'Specified Minimum Yield Strength [MPa]',
+            materialdata, 'SMYS [MPa]',
             field_spec=fields['SMYS']
         )
         self.inputs['SMYS'].grid(row=0, column=0)
@@ -119,9 +124,19 @@ class InputDataForm(tk.Frame):
     def reset(self):
         """Resets the form entries"""
 
+        # apply current date
         if self.settings['autofill date'].get():
             current_date = datetime.today().strftime('%Y-%m-%d')
             self.inputs['Date'].set(current_date)
+            check_date = datetime.today().strftime('%Y-%m-%d')
+            self.inputs['CheckDate'].set(check_date)
+
+        # apply default values
+        if self.settings['autofill sheet data'].get():
+            self.inputs['tol'].set(12.5)
+            self.inputs['SMYS'].set(450)
+            self.inputs['E'].set(207)
+            self.inputs['v'].set(0.3)
 
     def get_errors(self):
         """Get a list of field errors in the form"""
@@ -157,7 +172,7 @@ class MainMenu(tk.Menu):
             variable=settings['autofill date']
         )
         options_menu.add_checkbutton(
-            label='Autofill Sheet data',
+            label='Autofill Sheet Data',
             variable=settings['autofill sheet data']
         )
         self.add_cascade(label='Options', menu=options_menu)
@@ -170,7 +185,8 @@ class MainMenu(tk.Menu):
     def show_about(self):
         """Show the about dialog"""
         about_message = 'Wall Thickness'
-        about_detail = ('by Ben Randerson\n'
-                        'For assistance please contact the author.')
+        about_detail = ('by Ben Randerson © 2018\n\n'
+                        'An application to calculate the wall thickness of a '
+                        'subsea pipeline.')
         messagebox.showinfo(title='About', message=about_message,
                             detail=about_detail)

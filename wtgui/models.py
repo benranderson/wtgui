@@ -9,6 +9,7 @@ class CSVModel:
 
     fields = {
         'Project': {'req': False, 'type': FT.string},
+        'Pipeline': {'req': False, 'type': FT.string},
         'Originator': {'req': True, 'type': FT.string},
         'Date': {'req': True, 'type': FT.iso_date_string},
         'Checker': {'req': True, 'type': FT.string},

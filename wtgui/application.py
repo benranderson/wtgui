@@ -76,7 +76,14 @@ class Application(tk.Tk):
         data = self.inputdataform.get()
         model.save_record(data)
         self.cals_ran += 1
-        self.status.set(f'{self.cals_ran} calculations ran this session')
+
+        if self.cals_ran > 1:
+            plural = 's'
+        else:
+            plural = ''
+
+        self.status.set(
+            f'{self.cals_ran} calculation{plural} run this session')
         self.inputdataform.reset()
 
     def on_file_select(self):

@@ -1,24 +1,27 @@
 ======================================
- WTGUI Program specification
+ WTGUI Program Specification
 ======================================
 
 
 Description
 -----------
-WTGUI streamlines the process of carrying out wall thickness calculations in accordance with PD 8010-2.
-and provides a means of storing past calculations.
+WTGUI streamlines the process of carrying out wall thickness calculations in
+accordance with PD 8010-2 and provides a means of persisting a database of
+previous calculations.
 
 Functionality Required
 ----------------------
 
 The program must:
 
+* provide a UI for reading, updating and appending data to the CSV file
 * allow all relevant, valid input data to be entered, as per PD8010-2 requirements
 * append entered input data to a CSV file
   - The CSV file must have a filename of wt_data_CURRENTDATE.csv,
     where CURRENTDATE is the date of the calculation in ISO format (Year-month-day)
-  - The CSV file must have all the fields as per the chart
+  - The CSV file must have all required input parameters
 * enforce correct datatypes per field
+* prevent running the calculation when errors are present
 
 The program should try, whenever possible, to:
 
@@ -32,7 +35,6 @@ Functionality Not Required
 
 The program does not need to:
 
-* Allow editing of data. This can be done in LibreOffice if necessary.
 * Allow deletion of data.
 
 Limitations
