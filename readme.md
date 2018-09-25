@@ -25,7 +25,7 @@ To install in develop mode, add the `-e` flag to the install command above.
 
 ## Usage
 
-To start the application, run::
+To start the application, run:
 
 ```
 wt
@@ -33,4 +33,4 @@ wt
 
 ## General Notes
 
-The CSV file witll be saved to your current directory.
+The CSV file will be saved to your current directory.

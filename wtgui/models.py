@@ -9,6 +9,7 @@ class CSVModel:
 
     fields = {
         'Project': {'req': False, 'type': FT.string},
+        'Pipeline': {'req': False, 'type': FT.string},
         'Originator': {'req': True, 'type': FT.string},
         'Date': {'req': True, 'type': FT.iso_date_string},
         'Checker': {'req': True, 'type': FT.string},
@@ -34,16 +35,64 @@ class CSVModel:
     def __init__(self, filename):
         self.filename = filename
 
-    def save_record(self, data):
+    def get_all_pipelines(self):
+        if not os.path.exists(self.filename):
+            return []
+
+        with open(self.filename, 'r') as fh:
+            csvreader = csv.DictReader(fh)
+            missing_fields = (set(self.fields.keys()) -
+                              set(csvreader.fieldnames))
+            if len(missing_fields) > 0:
+                raise Exception(
+                    "File is missing fields: {}"
+                    .format(', '.join(missing_fields))
+                )
+            else:
+                pipelines = list(csvreader)
+
+        # correct issue with boolean fields
+        trues = ('true', 'yes', '1')
+        bool_fields = [
+            key for key, meta
+            in self.fields.items()
+            if meta['type'] == FT.boolean
+        ]
+        for pipeline in pipelines:
+            for key in bool_fields:
+                pipeline[key] = pipeline[key].lower() in trues
+
+        return pipelines
+
+    def get_pipeline(self, rownum):
+        """Get a single pipeline by row number
+
+        Callling code should catch IndexError
+          in pipeline of a bad rownum.
+        """
+
+        return self.get_all_pipelines()[rownum]
+
+    def save_pipeline(self, data, rownum=None):
         """Save a dict of data to the CSV file"""
 
-        newfile = not os.path.exists(self.filename)
-
-        with open(self.filename, 'a') as fh:
-            csvwriter = csv.DictWriter(fh, fieldnames=self.fields.keys())
-            if newfile:
+        if rownum is not None:
+            pipelines = self.get_all_pipelines()
+            pipelines[rownum] = data
+            with open(self.filename, 'w') as fh:
+                csvwriter = csv.DictWriter(fh,
+                                           fieldnames=self.fields.keys())
                 csvwriter.writeheader()
-            csvwriter.writerow(data)
+                csvwriter.writerows(pipelines)
+
+        else:
+            newfile = not os.path.exists(self.filename)
+
+            with open(self.filename, 'a') as fh:
+                csvwriter = csv.DictWriter(fh, fieldnames=self.fields.keys())
+                if newfile:
+                    csvwriter.writeheader()
+                csvwriter.writerow(data)
 
 
 class SettingsModel:
